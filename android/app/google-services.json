@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "322600292864",
+    "project_id": "cemilchat",
+    "storage_bucket": "cemilchat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322600292864:android:e18b94fffaaf59c87a7ee5",
+        "android_client_info": {
+          "package_name": "com.cemilchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322600292864-okeijgschq2pfm50befgd5qp72hu3unm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cemilchat",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "322600292864-39fe2jm7tcpgka0pam8ingp8mn4gien4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn_s-AolJ3pEqDmlI-mCNnfc6LT_5d5QY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322600292864-39fe2jm7tcpgka0pam8ingp8mn4gien4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
