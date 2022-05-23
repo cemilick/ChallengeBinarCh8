@@ -3,6 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
+import BottomTab from './BottomTab';
 export default function MainRoutes() {
   const Stack = createStackNavigator();
   return (
@@ -11,7 +12,7 @@ export default function MainRoutes() {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
-      {/* <Stack.Screen name='ChatApp' component={ChatApp} /> */}
+      <Stack.Screen name="BottomTab" component={BottomTab} />
     </Stack.Navigator>
   );
 }

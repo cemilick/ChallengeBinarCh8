@@ -22,20 +22,28 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-
+import database from '@react-native-firebase/database';
 LogBox.ignoreAllLogs();
 
 export default function Index({navigation}) {
   useEffect(() => {
     GoogleSignin.configure();
   }, []);
-  const [user, setUser] = useState({});
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      setUser(userInfo);
-      console.log(user);
+      const isLogin = await GoogleSignin.isSignedIn();
+      if (isLogin) {
+        navigation.navigate('ChatApp');
+      } else {
+        const userInfo = await GoogleSignin.signIn();
+        const reference = database().ref('/users/' + userInfo.user.id);
+        reference.set({
+          _id: userInfo.user.id,
+          name: userInfo.user.name,
+          email: userInfo.user.email,
+        });
+      }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('canceled');
