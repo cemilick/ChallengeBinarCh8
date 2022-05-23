@@ -19,6 +19,8 @@ target 'cemilchat' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'cemilchatTests' do
     inherit! :complete
     # Pods for testing

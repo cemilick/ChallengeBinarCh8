@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {LogBox} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Fumi} from 'react-native-textinput-effects';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -17,43 +16,11 @@ import {
 import logo from '../../assets/images/logo.png';
 import Comfortaa from '../../components/Comfortaa';
 import {moderateScale as ms} from 'react-native-size-matters';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-
-LogBox.ignoreAllLogs();
 
 export default function Index({navigation}) {
-  useEffect(() => {
-    GoogleSignin.configure();
-  }, []);
-  const [user, setUser] = useState({});
-  const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      setUser(userInfo);
-      console.log(user);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('canceled');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-        console.log('in proses');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-        console.log('outdated');
-      } else {
-        // some other error happened
-        console.log(error, 'error');
-      }
-    }
-  };
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
   return (
     <ScrollView style={{backgroundColor: colors.primaryDark}}>
@@ -62,12 +29,22 @@ export default function Index({navigation}) {
         <View style={styles.circle} />
         <View style={styles.circle} />
       </View>
-
       <View style={styles.allContainer}>
         <View style={styles.logoContainer}>
           <Image source={logo} style={styles.logo} resizeMode="contain" />
         </View>
         <View style={styles.formContainer}>
+          <Fumi
+            style={styles.form}
+            label={'Fullname'}
+            iconClass={FontAwesome5}
+            iconName={'user'}
+            iconColor={colors.primary}
+            iconSize={ms(20)}
+            iconWidth={ms(40)}
+            inputPadding={ms(16)}
+            onChangeText={text => setName(text)}
+          />
           <Fumi
             style={styles.form}
             label={'Email'}
@@ -79,7 +56,6 @@ export default function Index({navigation}) {
             inputPadding={ms(16)}
             onChangeText={text => setEmail(text)}
           />
-
           <Fumi
             style={styles.form}
             label={'Password'}
@@ -94,19 +70,19 @@ export default function Index({navigation}) {
           />
 
           <TouchableOpacity style={styles.button}>
-            <Comfortaa>Login</Comfortaa>
+            <Comfortaa>Register</Comfortaa>
           </TouchableOpacity>
         </View>
         <View style={styles.footer}>
-          <GoogleSigninButton onPress={signIn} />
-          <Comfortaa>Don't have an Account?</Comfortaa>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Comfortaa>Already have an Account?</Comfortaa>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Comfortaa type="Bold" decoration="underline">
-              Create new one!
+              Login here!
             </Comfortaa>
           </TouchableOpacity>
         </View>
       </View>
+
       <View style={styles.circleBottomContainer}>
         <View style={styles.circle} />
         <View style={styles.circle} />
@@ -139,17 +115,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: ms(150),
-    height: ms(150),
+    width: ms(200),
+    height: ms(200),
   },
   logoContainer: {
-    backgroundColor: colors.primary,
-    borderRadius: ms(200),
-    padding: ms(20),
+    width: wp(100),
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: ms(10),
   },
   button: {
     backgroundColor: colors.primaryDark,
