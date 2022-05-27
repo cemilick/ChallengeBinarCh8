@@ -23,26 +23,40 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import database from '@react-native-firebase/database';
+import {setIdUser, setToken} from '../../store/globalAction';
+import {useDispatch, useSelector} from 'react-redux';
 LogBox.ignoreAllLogs();
 
 export default function Index({navigation}) {
+  const dispatch = useDispatch();
+  const {id_user} = useSelector(data => data.global);
   useEffect(() => {
     GoogleSignin.configure();
+    if (id_user !== null) navigation.navigate('BottomTab');
   }, []);
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const isLogin = await GoogleSignin.isSignedIn();
-      if (isLogin) {
-        navigation.navigate('ChatApp');
+      if (id_user !== null) {
+        navigation.navigate('BottomTab');
       } else {
         const userInfo = await GoogleSignin.signIn();
-        const reference = database().ref('/users/' + userInfo.user.id);
-        reference.set({
-          _id: userInfo.user.id,
-          name: userInfo.user.name,
-          email: userInfo.user.email,
-        });
+        database()
+          .ref('users/' + userInfo.user.id)
+          .on('value', data => {
+            if (!data.val()) {
+              database()
+                .ref('users/' + userInfo.user.id)
+                .set({
+                  _id: userInfo.user.id,
+                  name: userInfo.user.name,
+                  email: userInfo.user.email,
+                });
+            }
+          });
+        dispatch(setToken(userInfo.idToken));
+        dispatch(setIdUser(userInfo.user.id));
+        navigation.navigate('BottomTab');
       }
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -60,9 +74,6 @@ export default function Index({navigation}) {
     }
   };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   return (
     <ScrollView style={{backgroundColor: colors.primaryDark}}>
       <View style={styles.circleTopContainer}>
@@ -75,44 +86,8 @@ export default function Index({navigation}) {
         <View style={styles.logoContainer}>
           <Image source={logo} style={styles.logo} resizeMode="contain" />
         </View>
-        <View style={styles.formContainer}>
-          <Fumi
-            style={styles.form}
-            label={'Email'}
-            iconClass={FontAwesome5}
-            iconName={'envelope'}
-            iconColor={colors.primary}
-            iconSize={ms(20)}
-            iconWidth={ms(40)}
-            inputPadding={ms(16)}
-            onChangeText={text => setEmail(text)}
-          />
-
-          <Fumi
-            style={styles.form}
-            label={'Password'}
-            iconClass={FontAwesome5}
-            iconName={'lock'}
-            iconColor={colors.primary}
-            iconSize={ms(20)}
-            iconWidth={ms(40)}
-            inputPadding={ms(16)}
-            secureTextEntry={true}
-            onChangeText={text => setPassword(text)}
-          />
-
-          <TouchableOpacity style={styles.button}>
-            <Comfortaa>Login</Comfortaa>
-          </TouchableOpacity>
-        </View>
         <View style={styles.footer}>
           <GoogleSigninButton onPress={signIn} />
-          <Comfortaa>Don't have an Account?</Comfortaa>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Comfortaa type="Bold" decoration="underline">
-              Create new one!
-            </Comfortaa>
-          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.circleBottomContainer}>

@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import BottomTab from './BottomTab';
+import RoomChat from '../screens/RoomChat';
 export default function MainRoutes() {
   const Stack = createStackNavigator();
   return (
@@ -13,6 +14,11 @@ export default function MainRoutes() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="BottomTab" component={BottomTab} />
+      <Stack.Screen
+        name="RoomChat"
+        component={RoomChat}
+        options={({route}) => ({headerShown: true, title: route.params.title})}
+      />
     </Stack.Navigator>
   );
 }
