@@ -10,11 +10,12 @@ import database from '@react-native-firebase/database';
 import {FlatList} from 'react-native-gesture-handler';
 import {ms} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
-import {setSelectedUser} from '../../store/globalAction';
+import {setIdUser, setSelectedUser} from '../../store/globalAction';
 
 export default function Index({navigation}) {
   const logout = async () => {
     await GoogleSignin.signOut();
+    dispatch(setIdUser(null));
     navigation.navigate('Login');
   };
   const {id_user} = useSelector(data => data.global);

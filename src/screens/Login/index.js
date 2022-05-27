@@ -30,12 +30,15 @@ LogBox.ignoreAllLogs();
 export default function Index({navigation}) {
   const dispatch = useDispatch();
   const {id_user} = useSelector(data => data.global);
+  console.log(id_user);
   useEffect(() => {
     GoogleSignin.configure();
+    console.log(id_user);
     if (id_user !== null) navigation.navigate('BottomTab');
-  }, []);
+  }, [id_user]);
   const signIn = async () => {
     try {
+      console.log(id_user, 'iduser');
       await GoogleSignin.hasPlayServices();
       if (id_user !== null) {
         navigation.navigate('BottomTab');

@@ -34,8 +34,6 @@ export const globalReducer = (state = initialState, action) => {
         selectedUser: action.payload,
       };
     default:
-      return {
-        ...state,
-      };
+      return state;
   }
 };

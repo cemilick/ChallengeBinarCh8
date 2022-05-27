@@ -12,7 +12,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   timeOut: null,
-  whitelist: ['login'],
+  whitelist: ['global'],
 };
 
 const persistedReducer = persistReducer(persistConfig, allReducers);
