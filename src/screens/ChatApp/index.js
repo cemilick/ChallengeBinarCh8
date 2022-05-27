@@ -1,4 +1,10 @@
-import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  BackHandler,
+} from 'react-native';
 import Comfortaa from '../../components/Comfortaa';
 import {colors} from '../../res/colors';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
@@ -18,16 +24,28 @@ export default function Index({navigation}) {
     dispatch(setIdUser(null));
     navigation.navigate('Login');
   };
+
   const {id_user} = useSelector(data => data.global);
   const [users, setUsers] = useState({});
   const dispatch = useDispatch();
   const data = [];
+  function handleBackButtonClick() {
+    BackHandler.exitApp();
+    return true;
+  }
   useEffect(() => {
     database()
       .ref('/users/')
       .on('value', snapshot => {
         setUsers(snapshot.val());
       });
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
   }, []);
   for (const key in users) {
     if (users[key]._id !== id_user) data.push(users[key]);
