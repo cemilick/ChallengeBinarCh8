@@ -1,10 +1,3 @@
-export const setConnected = payload => {
-  return {
-    type: 'SET_CONNECTED',
-    payload: payload,
-  };
-};
-
 export const setLoading = payload => {
   return {
     type: 'SET_LOADING',
@@ -29,6 +22,13 @@ export const setIdUser = payload => {
 export const setSelectedUser = payload => {
   return {
     type: 'SET_SELECTED_USER',
+    payload: payload,
+  };
+};
+
+export const setUser = payload => {
+  return {
+    type: 'SET_USER',
     payload: payload,
   };
 };

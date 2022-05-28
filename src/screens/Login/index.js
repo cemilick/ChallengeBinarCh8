@@ -7,15 +7,12 @@ import {
 } from 'react-native';
 import {LogBox} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Fumi} from 'react-native-textinput-effects';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {colors} from '../../res/colors';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import logo from '../../assets/images/logo.png';
-import Comfortaa from '../../components/Comfortaa';
 import {moderateScale as ms} from 'react-native-size-matters';
 import {
   GoogleSignin,
@@ -23,13 +20,14 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import database from '@react-native-firebase/database';
-import {setIdUser, setToken} from '../../store/globalAction';
+import {setIdUser, setToken, setUser} from '../../store/globalAction';
 import {useDispatch, useSelector} from 'react-redux';
+import Loading from '../../components/Loading';
 LogBox.ignoreAllLogs();
 
 export default function Index({navigation}) {
   const dispatch = useDispatch();
-  const {id_user} = useSelector(data => data.global);
+  const {id_user} = useSelector(state => state.global);
   console.log(id_user);
   useEffect(() => {
     GoogleSignin.configure();
@@ -39,7 +37,9 @@ export default function Index({navigation}) {
   const signIn = async () => {
     try {
       console.log(id_user, 'iduser');
+
       await GoogleSignin.hasPlayServices();
+
       if (id_user !== null) {
         navigation.navigate('BottomTab');
       } else {
@@ -56,6 +56,11 @@ export default function Index({navigation}) {
                   email: userInfo.user.email,
                 });
             }
+          });
+        database()
+          .ref('users/' + userInfo.user.id)
+          .on('value', data => {
+            dispatch(setUser(data.val()));
           });
         dispatch(setToken(userInfo.idToken));
         dispatch(setIdUser(userInfo.user.id));
@@ -74,11 +79,14 @@ export default function Index({navigation}) {
         // some other error happened
         console.log(error, 'error');
       }
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   return (
     <ScrollView style={{backgroundColor: colors.primaryDark}}>
+      {/* <Loading /> */}
       <View style={styles.circleTopContainer}>
         <View style={styles.circle} />
         <View style={styles.circle} />

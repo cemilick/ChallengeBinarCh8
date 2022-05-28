@@ -4,15 +4,12 @@ const initialState = {
   token: null,
   id_user: null,
   selectedUser: {},
+  user: {},
+  loading: false,
 };
 
 export const globalReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_CONNECTED':
-      return {
-        ...state,
-        connected: action.payload,
-      };
     case 'SET_LOADING':
       return {
         ...state,
@@ -32,6 +29,11 @@ export const globalReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedUser: action.payload,
+      };
+    case 'SET_USER':
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

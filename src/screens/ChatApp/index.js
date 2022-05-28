@@ -25,7 +25,7 @@ export default function Index({navigation}) {
     navigation.navigate('Login');
   };
 
-  const {id_user} = useSelector(data => data.global);
+  const {id_user, user} = useSelector(data => data.global);
   const [users, setUsers] = useState({});
   const dispatch = useDispatch();
   const data = [];
@@ -39,13 +39,8 @@ export default function Index({navigation}) {
       .on('value', snapshot => {
         setUsers(snapshot.val());
       });
+    console.log(user);
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-    return () => {
-      BackHandler.removeEventListener(
-        'hardwareBackPress',
-        handleBackButtonClick,
-      );
-    };
   }, []);
   for (const key in users) {
     if (users[key]._id !== id_user) data.push(users[key]);
@@ -83,7 +78,7 @@ export default function Index({navigation}) {
                     <View>
                       <Comfortaa style={styles.list}>{item.name}</Comfortaa>
                       <Comfortaa style={styles.lastChat}>
-                        lorem ipsum dolor sit amet ...{' '}
+                        {user.chat[item._id]?.chat[0].text}
                       </Comfortaa>
                     </View>
                   </View>

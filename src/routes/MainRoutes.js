@@ -2,7 +2,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from '../screens/Login';
-import Register from '../screens/Register';
 import BottomTab from './BottomTab';
 import RoomChat from '../screens/RoomChat';
 export default function MainRoutes() {
@@ -12,7 +11,6 @@ export default function MainRoutes() {
       initialRouteName="Login"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="BottomTab" component={BottomTab} />
       <Stack.Screen
         name="RoomChat"
